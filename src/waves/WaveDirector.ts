@@ -12,21 +12,21 @@ import type {
 export const DEFAULT_WAVES: readonly WaveDefinition[] = [
   {
     number: 1,
-    subtitle: 'FIRST MARKS ON THE PAGE',
+    subtitle: '纸上第一道笔痕',
     composition: [{ kind: 'grunt', count: 4 }, { kind: 'rusher', count: 2 }],
     spawnInterval: 0.72,
     maxConcurrent: 6,
   },
   {
     number: 2,
-    subtitle: 'THE INK FIGHTS BACK',
+    subtitle: '墨水开始反击',
     composition: [{ kind: 'grunt', count: 5 }, { kind: 'rusher', count: 3 }, { kind: 'marksman', count: 1 }],
     spawnInterval: 0.62,
     maxConcurrent: 9,
   },
   {
     number: 3,
-    subtitle: 'NO CLEAN MARGINS',
+    subtitle: '页边不再安全',
     composition: [
       { kind: 'grunt', count: 5 },
       { kind: 'rusher', count: 4 },
@@ -38,7 +38,7 @@ export const DEFAULT_WAVES: readonly WaveDefinition[] = [
   },
   {
     number: 4,
-    subtitle: 'CROSS OUT EVERYTHING',
+    subtitle: '划掉一切',
     composition: [
       { kind: 'grunt', count: 6 },
       { kind: 'rusher', count: 5 },
@@ -50,7 +50,7 @@ export const DEFAULT_WAVES: readonly WaveDefinition[] = [
   },
   {
     number: 5,
-    subtitle: 'THE DOODLER IS COMING',
+    subtitle: '涂鸦者要来了',
     composition: [
       { kind: 'boss', count: 1 },
       { kind: 'grunt', count: 4 },

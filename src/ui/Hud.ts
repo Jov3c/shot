@@ -2,6 +2,7 @@ export type OverlayMode = 'loading' | 'start' | 'playing' | 'paused' | 'defeat' 
 
 export interface HudWeaponState {
   slot: number;
+  id: string;
   name: string;
   ammo: number;
   reserve: number;
@@ -112,48 +113,48 @@ export class Hud {
     this.startButton.hidden = mode !== 'start' && mode !== 'loading';
     this.restartButton.hidden = mode !== 'defeat' && mode !== 'victory';
     if (mode === 'loading') {
-      this.overlayTitle.textContent = 'BALLPOINT BREACH';
-      this.overlayCopy.textContent = 'sharpening pencils…';
+      this.overlayTitle.textContent = '圆珠笔\n突围';
+      this.overlayCopy.textContent = '正在削铅笔…';
       this.startButton.disabled = true;
     } else if (mode === 'start') {
-      this.overlayTitle.textContent = 'BALLPOINT BREACH';
-      this.overlayCopy.textContent = 'survive five waves in a construction-yard sketchbook';
-      this.startButton.textContent = 'CLICK TO ENTER THE PAGE';
+      this.overlayTitle.textContent = '圆珠笔\n突围';
+      this.overlayCopy.textContent = '在施工场草图册里，撑过五波墨线敌人';
+      this.startButton.textContent = '点击进入';
       this.startButton.disabled = false;
     } else if (mode === 'paused') {
-      this.overlayTitle.textContent = 'PAUSED';
-      this.overlayCopy.textContent = 'click the page to resume · Esc releases the cursor';
+      this.overlayTitle.textContent = '已暂停';
+      this.overlayCopy.textContent = '点击画面继续 · Esc 释放鼠标';
     } else if (mode === 'defeat') {
-      this.overlayTitle.textContent = 'ERASED';
-      this.overlayCopy.textContent = 'the page got the better of you';
-      this.restartButton.textContent = 'DRAW AGAIN';
+      this.overlayTitle.textContent = '被擦掉了';
+      this.overlayCopy.textContent = '这一页赢了你，再来一页。';
+      this.restartButton.textContent = '重画一局';
     } else if (mode === 'victory') {
-      this.overlayTitle.textContent = 'PAGE CLEARED';
-      this.overlayCopy.textContent = 'THE DOODLER has been erased';
-      this.restartButton.textContent = 'PLAY AGAIN';
+      this.overlayTitle.textContent = '整页清空';
+      this.overlayCopy.textContent = '涂鸦者已被擦除';
+      this.restartButton.textContent = '再玩一局';
     }
   }
 
   render(snapshot: HudSnapshot): void {
     this.score.textContent = String(snapshot.score);
-    this.wave.textContent = `WAVE ${snapshot.wave}`;
-    this.enemies.textContent = `${snapshot.enemiesLeft} ${snapshot.enemiesLeft === 1 ? 'enemy' : 'enemies'} left`;
+    this.wave.textContent = `第 ${snapshot.wave} 波`;
+    this.enemies.textContent = `剩余 ${snapshot.enemiesLeft} 个`;
     this.health.textContent = String(Math.ceil(snapshot.health));
     this.healthBar.style.setProperty('--value', `${Math.max(0, snapshot.health / snapshot.maxHealth) * 100}%`);
     const current = snapshot.weapons.find((weapon) => weapon.selected) ?? snapshot.weapons[0];
     if (current) {
-      this.ammo.textContent = current.name === 'KATANA' ? '∞' : String(current.ammo);
-      this.reserve.textContent = current.name === 'KATANA' ? '' : `/${current.reserve}`;
+      this.ammo.textContent = current.id === 'katana' ? '∞' : String(current.ammo);
+      this.reserve.textContent = current.id === 'katana' ? '' : `/${current.reserve}`;
       this.weaponName.textContent = current.name;
       this.weaponDescription.textContent = current.description;
-      this.root.body.dataset.reticle = current.name.toLowerCase();
+      this.root.body.dataset.reticle = current.id;
     }
     for (const weapon of snapshot.weapons) {
       const row = this.root.querySelector<HTMLElement>(`[data-weapon-slot="${weapon.slot}"]`);
       if (!row) continue;
       row.classList.toggle('selected', weapon.selected);
       const ammo = row.querySelector<HTMLElement>('[data-weapon-ammo]');
-      if (ammo) ammo.textContent = weapon.name === 'KATANA' ? '∞' : `${weapon.ammo}/${weapon.reserve}`;
+      if (ammo) ammo.textContent = weapon.id === 'katana' ? '∞' : `${weapon.ammo}/${weapon.reserve}`;
     }
     this.grappleBar.style.setProperty('--value', `${Math.max(0, Math.min(1, snapshot.grappleRatio)) * 100}%`);
     const showBlock = snapshot.blockRatio !== undefined;

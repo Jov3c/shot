@@ -17,3 +17,10 @@ motion timeline, user-signal memory, and handoff practices informed the unified 
 The full MIT notice is preserved at `licenses/video2threejs-MIT.txt`.
 
 No upstream Git metadata, build cache, downloaded model, or upstream repository snapshot is included.
+
+## ZCOOL KuaiLe (Chinese UI face)
+
+Source: https://fonts.google.com/specimen/ZCOOL+KuaiLe, SIL Open Font License 1.1.
+The deployed build carries a `pyftsubset` reduction containing only the glyphs used
+by the Chinese interface; the full license is preserved at
+`licenses/zcool-kuaile-OFL.txt`.

@@ -1,6 +1,7 @@
+@font-face{font-family:'ZCOOL KuaiLe';src:url('./assets/fonts/zcool-kuaile-subset.woff2') format('woff2');font-display:swap}
 @import '@fontsource/patrick-hand';
 
-:root{font-family:'Patrick Hand','Chalkboard SE','Comic Sans MS',cursive;color:#27348f;background:#f6f0dc;font-synthesis:none;--ink:#27348f;--ink-dark:#18246f;--red:#d63b55;--orange:#e79a32;--green:#69b887;--paper:#f6f0dc;--reticle-spread:22px;--damage-strength:.4}
+:root{font-family:'Patrick Hand','ZCOOL KuaiLe','Chalkboard SE','PingFang SC','Microsoft YaHei',cursive;color:#27348f;background:#f6f0dc;font-synthesis:none;--ink:#27348f;--ink-dark:#18246f;--red:#d63b55;--orange:#e79a32;--green:#69b887;--paper:#f6f0dc;--reticle-spread:22px;--damage-strength:.4}
 *{box-sizing:border-box}
 html,body,#app{width:100%;height:100%;margin:0;display:block;overflow:hidden;background:var(--paper)}
 body{user-select:none}
@@ -50,3 +51,11 @@ body.player-hit #vignette::before{animation:player-damage-wash 680ms cubic-bezie
 #recording-status{position:fixed;z-index:60;top:14px;left:50%;transform:translateX(-50%);padding:7px 13px;border:1px solid rgba(39,52,143,.45);background:rgba(246,240,220,.9);color:var(--ink);font-size:12px;letter-spacing:.08em}#recording-status a{color:var(--ink-dark);font-weight:900;text-decoration:none}
 @media(max-width:900px){.hud-weapons{right:3%;min-width:145px}.hud-score,.hud-health,.hud-ammo{left:8%}.controls-grid{grid-template-columns:repeat(2,1fr)}.ability-meter{bottom:3%}}
 @media(max-width:650px){.overlay-card{padding:32px 24px 24px}.controls-grid{display:none}.hud-weapons ol{display:none}.hud-weapons{min-width:120px}.grapple-meter{display:none}}
+
+/* Chinese UI: keep the hand-drawn fallback legible at display sizes. */
+#overlay-title{white-space:pre-line;line-height:.92;letter-spacing:.02em}
+#wave-banner strong{line-height:1;letter-spacing:.03em}
+#hud{letter-spacing:.02em}
+.overlay-card .controls-grid b{min-width:52px}
+.hud-weapons>small{display:block;line-height:1.35;margin-top:2px}
+#hud{text-shadow:0 0 3px rgba(246,240,220,.85),0 0 7px rgba(246,240,220,.5),.35px .35px rgba(39,52,143,.32)}

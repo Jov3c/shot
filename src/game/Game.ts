@@ -230,7 +230,7 @@ export class Game {
         onReflect: (request) => this.handleReflection(request),
         onMuzzle: (request) => this.handleMuzzle(request),
         onEffect: (effect) => this.handleWeaponEffect(effect),
-        onWeaponChanged: (_id, slot) => this.hud.showTip(`weapon ${slot} ready`, 1.05),
+        onWeaponChanged: (_id, slot) => this.hud.showTip(`武器 ${slot} 就绪`, 1.05),
       },
     });
     // Keep every stock safely in front of the near plane. The extra mount is a
@@ -380,7 +380,7 @@ export class Game {
       this.input.setPointerFallback(true);
       this.capturePlayback = false;
       this.setMode('playing');
-      this.hud.showTip('POINTER LOCK UNAVAILABLE · MOVE THE CURSOR TO LOOK · ESC PAUSES', 5.5);
+      this.hud.showTip('无法锁定鼠标 · 移动光标转向 · Esc 暂停', 5.5);
     });
   }
 
@@ -430,7 +430,7 @@ export class Game {
     this.qaDamageDemoConsumed = false;
     this.roundStarted = true;
     this.waves.start();
-    this.hud.showTip('Q grapples enemies and the blue-ink anchor points', 5.5);
+    this.hud.showTip('Q 钩住敌人与蓝色墨点锚位', 5.5);
     this.setMode('paused');
   }
 
@@ -693,7 +693,7 @@ export class Game {
     if (result.count > 0) {
       this.audio.play('katana');
       this.effects.spawnBurst(request.origin, 'green', request.perfect ? 0.34 : 0.24, 0.2);
-      if (request.perfect) this.hud.showTip('PERFECT RETURN!', 0.8);
+      if (request.perfect) this.hud.showTip('完美反弹！', 0.8);
     }
   }
 
@@ -720,7 +720,7 @@ export class Game {
       this.audio.play('katana');
     } else if (effect.kind === 'block-break') {
       this.audio.play('hurt');
-      this.hud.showTip('BLOCK BROKEN', 1.1);
+      this.hud.showTip('格挡被破', 1.1);
     }
   }
 
@@ -735,7 +735,7 @@ export class Game {
     const incomingYaw = Math.atan2(event.direction.x, event.direction.z);
     const relative = Math.atan2(Math.sin(incomingYaw - this.player.yaw), Math.cos(incomingYaw - this.player.yaw));
     this.hud.flashDamage(relative, mitigatedDamage);
-    if (blocked) this.hud.showTip('BLOCKED', 0.55);
+    if (blocked) this.hud.showTip('已挡下', 0.55);
     if (dead) this.finish('defeat');
   }
 
@@ -800,10 +800,10 @@ export class Game {
     } else if (event.type === 'projectile-impact') {
       this.effects.spawnBurst(event.position, 'red', 0.13, 0.26);
     } else if (event.type === 'boss-phase') {
-      this.hud.showBanner('THE DOODLER', 'PHASE TWO · THE LINES GET ANGRY', 2.1);
+      this.hud.showBanner('涂鸦者', '第二阶段 · 线条发怒了', 2.1);
       this.audio.play('boss');
     } else if (event.type === 'boss-summon') {
-      this.hud.showTip('THE DOODLER SKETCHED REINFORCEMENTS', 2.1);
+      this.hud.showTip('涂鸦者召来了援兵', 2.1);
     } else if (event.type === 'cleanup') {
       this.lastHit.delete(event.enemyId);
     }
@@ -823,10 +823,10 @@ export class Game {
   private handleWaveEvent(event: WaveEvent): void {
     if (event.wave > 0) this.state.wave = event.wave;
     if (event.type === 'announcement') {
-      this.hud.showBanner(`WAVE ${event.wave}`, event.subtitle, event.duration ?? 2.15);
+      this.hud.showBanner(`第 ${event.wave} 波`, event.subtitle, event.duration ?? 2.15);
       this.audio.play(event.wave === 5 ? 'boss' : 'wave');
     } else if (event.type === 'wave-clear') {
-      this.hud.showBanner('WAVE CLEARED', 'CATCH YOUR BREATH · RESTOCKING INK', 2.8);
+      this.hud.showBanner('本波清空', '喘口气 · 补满墨水', 2.8);
     } else if (event.type === 'victory') {
       this.finish('victory');
     }
@@ -850,7 +850,7 @@ export class Game {
       this.weapons.addReserveAmmo('sniper', Math.max(2, Math.round(event.ammo * 0.18)));
     }
     this.effects.spawnBurst(this.player.body.position.clone().add(new THREE.Vector3(0, 0.7, 0)), 'green', 0.34, 0.42);
-    this.hud.showTip(event.kind === 'mixed' ? 'HEALTH + AMMO' : `${event.kind.toUpperCase()} REFILLED`, 1.25);
+    this.hud.showTip(event.kind === 'mixed' ? '生命 + 弹药' : event.kind === 'health' ? '生命已补满' : '弹药已补满', 1.25);
   }
 
   private finish(mode: 'defeat' | 'victory'): void {
@@ -1077,10 +1077,11 @@ export class Game {
       scoped: weapon.scopeState === 'active' || weapon.scopeState === 'entering',
       reticleSpread,
       boss: enemies.bossHealth !== null && enemies.bossMaxHealth !== null
-        ? { name: 'THE DOODLER', health: enemies.bossHealth, maxHealth: enemies.bossMaxHealth }
+        ? { name: '涂鸦者', health: enemies.bossHealth, maxHealth: enemies.bossMaxHealth }
         : null,
       weapons: WEAPON_IDS.map((id) => ({
         slot: WEAPON_DEFINITIONS[id].slot,
+        id,
         name: WEAPON_DEFINITIONS[id].label,
         description: WEAPON_DEFINITIONS[id].hint,
         ammo: weapon.ammo[id].magazine ?? 0,
@@ -1116,6 +1117,6 @@ export class Game {
     const stage = document.querySelector<HTMLElement>('#stage');
     if (!stage) return;
     const wave = Math.max(1, this.waves.wave || this.state.wave);
-    stage.textContent = `WAVE ${wave} · ${Math.round(this.smoothedFps)} FPS · ${this.enemies.livingCount} ACTORS`;
+    stage.textContent = `第 ${wave} 波 · ${Math.round(this.smoothedFps)} FPS · ${this.enemies.livingCount} 个敌人`;
   }
 }
