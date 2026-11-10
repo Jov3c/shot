@@ -52,6 +52,20 @@ body.player-hit #vignette::before{animation:player-damage-wash 680ms cubic-bezie
 @media(max-width:900px){.hud-weapons{right:3%;min-width:145px}.hud-score,.hud-health,.hud-ammo{left:8%}.controls-grid{grid-template-columns:repeat(2,1fr)}.ability-meter{bottom:3%}}
 @media(max-width:650px){.overlay-card{padding:32px 24px 24px}.controls-grid{display:none}.hud-weapons ol{display:none}.hud-weapons{min-width:120px}.grapple-meter{display:none}}
 
+#minimap{position:absolute;top:calc(2.5% + 2.6em);left:8.6%;width:168px;padding:5px;border:2px solid var(--ink);background:rgba(246,240,220,.8);transform:rotate(-.5deg);box-shadow:3px 3px 0 rgba(39,52,143,.14);pointer-events:none}
+#minimap canvas{display:block;width:100%;height:auto}
+.minimap-label{display:block;margin-top:1px;font-size:9px;letter-spacing:.16em;color:rgba(39,52,143,.6);text-align:right}
+@media(max-width:900px){#minimap{width:128px}}
+@media(max-width:720px){#minimap{display:none}}
+
+#reload-status{position:absolute;left:8.6%;bottom:12.5%;display:flex;align-items:center;gap:.55em;font-size:clamp(9px,.7vw,13px);letter-spacing:.08em;opacity:0;transition:opacity .12s}
+#reload-status.visible{opacity:1}
+#reload-status i{display:block;width:72px;height:5px;background:rgba(39,52,143,.18);overflow:hidden}
+#reload-status i::after{content:"";display:block;width:var(--value,0%);height:100%;background:var(--ink)}
+body.aiming .crosshair{opacity:.18}
+body.aiming #hit-marker{opacity:.9}
+.crosshair{transition:opacity .12s}
+
 /* Chinese UI: keep the hand-drawn fallback legible at display sizes. */
 #overlay-title{white-space:pre-line;line-height:.92;letter-spacing:.02em}
 #wave-banner strong{line-height:1;letter-spacing:.03em}

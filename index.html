@@ -12,6 +12,10 @@
 
     <section id="hud" aria-label="游戏状态">
       <div class="hud-score">得分 <strong data-hud="score">0</strong></div>
+      <div id="minimap" aria-hidden="true">
+        <canvas id="minimap-canvas" width="296" height="316"></canvas>
+        <span class="minimap-label">施工场</span>
+      </div>
       <div class="hud-wave"><strong data-hud="wave">第 1 波</strong><small data-hud="enemies">剩余 0 个</small></div>
 
       <div id="boss-health">
@@ -19,6 +23,7 @@
         <i data-hud="boss-bar"></i>
       </div>
 
+      <div id="reload-status"><span>换弹中</span><i data-hud="reload-bar"></i></div>
       <div class="hud-health"><span>生命</span><i data-hud="health-bar"></i><b data-hud="health">100</b></div>
       <div class="hud-ammo"><strong data-hud="ammo">30</strong><span data-hud="reserve">/150</span><div class="ammo-ticks">//// //// //// //// //</div></div>
 

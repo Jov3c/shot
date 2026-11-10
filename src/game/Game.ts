@@ -22,6 +22,7 @@ import {
   type PlayerDamageEvent,
 } from '../enemies';
 import { InputManager, type InputFrame } from '../input/InputManager';
+import { Minimap } from '../ui/Minimap';
 import { ArenaBuilder, type EnemySpawnPoint } from '../level';
 import { PhysicsWorld } from '../physics/PhysicsWorld';
 import { PlayerController } from '../player/PlayerController';
@@ -114,6 +115,7 @@ export class Game {
   private readonly supplies: SupplySystem;
   private readonly raycaster = new THREE.Raycaster();
   private readonly weaponMount = new THREE.Group();
+  private readonly minimap: Minimap | null;
   private readonly aimOrigin = new THREE.Vector3();
   private readonly aimDirection = new THREE.Vector3();
   private readonly aimUp = new THREE.Vector3();
@@ -197,6 +199,8 @@ export class Game {
     this.player = new PlayerController(this.camera, this.physics, this.arena.safePlayerSpawn);
     this.input = new InputManager(canvas);
     this.hud = new Hud();
+    const minimapCanvas = document.querySelector<HTMLCanvasElement>('#minimap-canvas');
+    this.minimap = minimapCanvas ? new Minimap(minimapCanvas, this.arena) : null;
     this.effects = new EffectPool(this.scene);
     this.queries = new ArenaQueries(this.arena);
 
@@ -551,6 +555,7 @@ export class Game {
     this.arena.update(simulationDelta);
     this.effects.update(simulationDelta);
     this.supplies.update(realDelta, this.player.body.position, this.state.mode === 'playing');
+    this.minimap?.update(realDelta, this.player.body.position, this.camera.rotation.y, this.enemies.getLivingEnemies());
     this.renderHud();
   }
 
@@ -1075,6 +1080,9 @@ export class Game {
       grappleRatio: this.grapple.readyRatio,
       blockRatio: weapon.activeWeapon === 'katana' ? weapon.katana.stamina / weapon.katana.maxStamina : undefined,
       scoped: weapon.scopeState === 'active' || weapon.scopeState === 'entering',
+      aiming: weapon.aiming,
+      reloading: weapon.phase === 'reloading',
+      reloadProgress: weapon.phaseProgress,
       reticleSpread,
       boss: enemies.bossHealth !== null && enemies.bossMaxHealth !== null
         ? { name: '涂鸦者', health: enemies.bossHealth, maxHealth: enemies.bossMaxHealth }

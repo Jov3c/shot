@@ -21,6 +21,9 @@ export interface HudSnapshot {
   blockRatio?: number;
   boss?: { name: string; health: number; maxHealth: number } | null;
   scoped?: boolean;
+  aiming?: boolean;
+  reloading?: boolean;
+  reloadProgress?: number;
   reticleSpread?: number;
 }
 
@@ -52,6 +55,8 @@ export class Hud {
   private readonly weaponName: HTMLElement;
   private readonly weaponDescription: HTMLElement;
   private readonly grappleBar: HTMLElement;
+  private readonly reloadWrap: HTMLElement;
+  private readonly reloadBar: HTMLElement;
   private readonly blockWrap: HTMLElement;
   private readonly blockBar: HTMLElement;
   private readonly bossWrap: HTMLElement;
@@ -92,6 +97,8 @@ export class Hud {
     this.weaponName = required('[data-hud="weapon-name"]');
     this.weaponDescription = required('[data-hud="weapon-description"]');
     this.grappleBar = required('[data-hud="grapple-bar"]');
+    this.reloadWrap = required('#reload-status');
+    this.reloadBar = required('[data-hud="reload-bar"]');
     this.blockWrap = required('#block-stamina');
     this.blockBar = required('[data-hud="block-bar"]');
     this.bossWrap = required('#boss-health');
@@ -167,6 +174,10 @@ export class Hud {
     }
     this.scope.classList.toggle('visible', Boolean(snapshot.scoped));
     this.root.body.classList.toggle('scoped', Boolean(snapshot.scoped));
+    this.root.body.classList.toggle('aiming', Boolean(snapshot.aiming));
+    const reloading = Boolean(snapshot.reloading);
+    this.reloadWrap.classList.toggle('visible', reloading);
+    if (reloading) this.reloadBar.style.setProperty('--value', `${Math.max(0, Math.min(1, snapshot.reloadProgress ?? 0)) * 100}%`);
     this.root.body.style.setProperty('--reticle-spread', `${snapshot.reticleSpread ?? 22}px`);
   }
 

@@ -417,7 +417,7 @@ function createRifleViewmodel(): WeaponViewmodel {
     id: 'rifle',
     root,
     hipPose: makePose([0.6, -0.55, -1.22], [0.035, 0.115, -0.012], 1.1),
-    aimPose: makePose([0, -0.29, -1.3], [0, 0, 0], 1),
+    aimPose: makePose([-0.486, 0.0132, -1.3], [0, 0, 0], 1),
     parts: { muzzle, magazine, sight },
   };
 }
@@ -458,7 +458,7 @@ function createShotgunViewmodel(): WeaponViewmodel {
     id: 'shotgun',
     root,
     hipPose: makePose([0.54, -0.5, -1.24], [0.035, 0.1, -0.012], 1),
-    aimPose: makePose([0, -0.315, -1.32], [0, 0, 0], 1),
+    aimPose: makePose([-0.486, 0.0739, -1.32], [0, 0, 0], 1),
     parts: { muzzle, pump },
   };
 }
@@ -507,7 +507,7 @@ function createRevolverViewmodel(): WeaponViewmodel {
     id: 'revolver',
     root,
     hipPose: makePose([0.53, -0.44, -1.0], [0.015, 0.1, -0.02], 1),
-    aimPose: makePose([0, -0.28, -1.08], [0, 0, 0], 1),
+    aimPose: makePose([-0.486, 0.0839, -1.08], [0, 0, 0], 1),
     parts: { muzzle, cylinder, hammer },
   };
 }

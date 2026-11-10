@@ -929,17 +929,28 @@ export class WeaponSystem {
   }
 
   private animateReload(viewmodel: WeaponViewmodel, progress: number): void {
-    const curve = Math.sin(progress * Math.PI);
-    viewmodel.root.position.y -= curve * 0.18;
-    viewmodel.root.rotation.z += curve * 0.34;
-    viewmodel.root.rotation.x += curve * 0.08;
+    const dip = progress < 0.16
+      ? easeOutCubic(progress / 0.16)
+      : progress > 0.86
+        ? 1 - easeInOutCubic((progress - 0.86) / 0.14)
+        : 1;
+    viewmodel.root.position.y -= dip * 0.24;
+    viewmodel.root.position.z += dip * 0.05;
+    viewmodel.root.rotation.z += dip * 0.46;
+    viewmodel.root.rotation.x += dip * 0.1;
     const magazine = viewmodel.parts.magazine;
     if (magazine) {
       const home = this.partHomes.get(magazine);
       if (home) {
-        const remove = progress < 0.48 ? easeOutCubic(progress / 0.48) : 1 - easeInOutCubic((progress - 0.48) / 0.52);
-        magazine.position.y = home.position.y - remove * 0.58;
-        magazine.rotation.z = home.rotation.z + remove * 0.22;
+        let travel = 0;
+        if (progress > 0.16) {
+          if (progress < 0.46) travel = easeOutCubic((progress - 0.16) / 0.3);
+          else if (progress < 0.56) travel = 1;
+          else if (progress < 0.8) travel = 1 - easeInOutCubic((progress - 0.56) / 0.24);
+        }
+        magazine.position.y = home.position.y - travel * 0.72;
+        magazine.position.z = home.position.z - travel * 0.06;
+        magazine.rotation.z = home.rotation.z + travel * 0.24;
       }
     }
   }
